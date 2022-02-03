@@ -1,0 +1,30 @@
+/* category component */
+
+.category-title {
+  display: block;
+  text-align: start;
+  margin-left: 40px;
+  margin-top: 30px;
+  font-family: Raleway;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 42px;
+  line-height: 160%;
+  color: #1d1f22;
+}
+.product-list-container {
+  display: grid;
+  grid-template-rows: auto;
+  /* grid-template-columns:1fr 1fr 1fr; */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 310px));
+  gap: 50px 50px;
+  /* background-color: gray; */
+  /* padding-left: 50px;
+  */
+  padding-top: 50px;
+  padding-bottom: 50px;
+  box-sizing: border-box;
+  align-content: center;
+  justify-content: center;
+  padding: auto;
+}
