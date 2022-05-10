@@ -1,16 +1,21 @@
 import React, { Component } from "react"
 import { withRouter } from "react-router-dom"
 import { connect } from "react-redux"
+import PropTypes from "prop-types"
+
 import {
   incProductQuantity,
   decProductQuantity,
   removeProductCart,
-} from "../actions/Cart"
-import { getSelectedAtt, getAllSelectedAttr } from "../utils"
-import "../style/cart.style.css"
-import PropTypes from "prop-types"
-import { ReactComponent as RightArrow } from "../logos/Vector3.svg"
-import { ReactComponent as LeftArrow } from "../logos/Vector2.svg"
+} from "../../redux/actions/Cart"
+import { getSelectedAtt, getAllSelectedAttr } from "../../utils"
+
+import "./cart.style.css"
+
+import { ReactComponent as RightArrow } from "../../logos/Vector3.svg"
+import { ReactComponent as LeftArrow } from "../../logos/Vector2.svg"
+
+import CancelItem from "./CancelItem"
 
 class Cart extends Component {
   state = {
@@ -273,7 +278,7 @@ class Cart extends Component {
                     }
                     className="cart-img-x"
                   >
-                    <div>X</div>
+                    <CancelItem />
                   </div>
                 </div>
               </div>

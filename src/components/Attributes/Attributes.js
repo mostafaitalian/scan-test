@@ -1,6 +1,8 @@
 import React, { Component } from "react"
-import "../style/attributes.style.css"
+import "./attributes.style.css"
 import PropTypes from "prop-types"
+
+import AttributeItem from "./AttributeItem"
 
 class Attributes extends Component {
   constructor(props) {
@@ -27,10 +29,11 @@ class Attributes extends Component {
   render() {
     // destructing attributes from props
     let attributes
-    if (this.props.product !== undefined) {
-      attributes = this.props.product.attributes
-    }
-
+    // modified
+    // if (this.props.product !== undefined) {
+    //   attributes = this.props.product.attributes
+    // }
+    attributes = this.props.product?.attributes
     return (
       <div>
         {attributes &&
@@ -58,26 +61,15 @@ class Attributes extends Component {
                         }
 
                         return (
-                          <div
-                            ref={this.divRef}
-                            data-g={`${item.value}`}
+                          <AttributeItem
                             className={
                               x !== undefined && v !== undefined ? `${x[v].class}` : ""
                             }
-                            onClick={(e) =>
-                              this.handleSelect(e, {
-                                attrName: attribute.name,
-                                selectedItem: {
-                                  id: item.id,
-                                  value: item.value,
-                                  displayValue: item.displayValue,
-                                },
-                              })
-                            }
                             key={item.value}
-                          >
-                            {item.value}
-                          </div>
+                            attribute={attribute}
+                            item={item}
+                            handleSelect={this.handleSelect}
+                          />
                         )
                       })}
                   </div>
@@ -96,25 +88,16 @@ class Attributes extends Component {
                         }
 
                         return (
-                          <div
-                            style={{ backgroundColor: `${item.value}` }}
-                            ref={this.divRef}
-                            data-g={`${item.value}`}
+                          <AttributeItem
+                            style={item.value || null}
+                            handleSelect={this.handleSelect}
                             className={
                               x !== undefined && v !== undefined ? `${x[v].class}` : ""
                             }
-                            onClick={(e) =>
-                              this.handleSelect(e, {
-                                attrName: attribute.name,
-                                selectedItem: {
-                                  id: item.id,
-                                  value: item.value,
-                                  displayValue: item.displayValue,
-                                },
-                              })
-                            }
                             key={item.value}
-                          ></div>
+                            attribute={attribute}
+                            item={item}
+                          />
                         )
                       })}
                   </div>

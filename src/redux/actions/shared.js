@@ -1,4 +1,5 @@
-import { getAllCurrencies } from "../utils/index"
+import { getAllCurrencies } from "../../utils/api"
+
 // import { add_all_categories } from "./Categories"
 import { addCurrencies } from "./Currencies"
 import { addCurrentCurrency } from "./CurrentCurrency"

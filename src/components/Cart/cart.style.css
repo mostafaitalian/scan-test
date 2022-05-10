@@ -189,12 +189,15 @@
   top: 5px;
   right: 5px;
 }
-.cart-img-x:hover {
+.cart-img-x:hover{
   background-color: black;
   color: white;
 }
+.cart-img-x:hover .span1, .cart-img-x:hover  .span2{
+  background-color: white;
+}
 .cart-img-x div {
-  display: block;
+  display: inline-flex;
   padding: 3px;
   /* width: 90%;
     height: 90%; */

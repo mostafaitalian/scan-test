@@ -1,11 +1,14 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { getCategory } from "../utils"
-import ProductItem from "./ProductItem"
-import "../style/category.style.css"
 import PropTypes from "prop-types"
-import { addCategory } from "../actions/Categories"
 import Spin from "react-cssfx-loading/lib/CircularProgress"
+
+import { getCategory } from "../../utils/api"
+import { addCategory } from "../../redux/actions/Categories"
+
+import ProductItem from "../PLP/ProductItem"
+
+import "./category.style.css"
 
 class Category extends Component {
   state = {
@@ -13,8 +16,8 @@ class Category extends Component {
     category: {},
   }
   static propTypes = {
-    handleCloseCarMenu: PropTypes.func,
-    handleCloseCurMenu: PropTypes.func,
+    handleCloseCarMenu: PropTypes.func.isRequired,
+    handleCloseCurMenu: PropTypes.func.isRequired,
     match: PropTypes.object,
     category: PropTypes.object,
     dispatch: PropTypes.func,

@@ -1,8 +1,14 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { changeCurrentCurrency } from "../actions/CurrentCurrency"
-import "../style/currencylist.style.css"
 import PropTypes from "prop-types"
+
+import { changeCurrentCurrency } from "../../redux/actions/CurrentCurrency"
+
+// using normal css
+// import "./currencylist.style.css"
+
+// using styled component
+import { StyledCurrencyList, CurrencyListItem } from "./CurrencyList.styles"
 
 class CurrencyList extends Component {
   static propTypes = {
@@ -21,13 +27,16 @@ class CurrencyList extends Component {
     const { currencies } = this.props
     return (
       // currency list
-      <ul className="currency-list">
+      <StyledCurrencyList>
         {currencies.map((currency) => (
-          <li key={currency.label} onClick={() => this.handleOnClick(currency)}>
+          <CurrencyListItem
+            key={currency.label}
+            onClick={() => this.handleOnClick(currency)}
+          >
             {currency.symbol} {currency.label}
-          </li>
+          </CurrencyListItem>
         ))}
-      </ul>
+      </StyledCurrencyList>
     )
   }
 }

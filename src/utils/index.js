@@ -1,7 +1,3 @@
-import { client } from "../index"
-import { gql } from "@apollo/client"
-
-// check if 2 arrays are equals all items in first array are the same as the second
 export function checkArraysEqual(a, b) {
   if (a === b) return true
   if (a.length !== b.length) return false
@@ -84,7 +80,23 @@ export function reshapeAttributes(attributes) {
   }
   return h
 }
-
+export function reshapeAttributes2(attributes) {
+  let h = {}
+  attributes.map((att) => {
+    if (att.items.length !== 0) {
+      att.items.map((item) => {
+        h = {
+          ...h,
+          [att.name]: {
+            ...h[att.name],
+            ...{ [item.value]: { class: "", value: item.value, selected: false } },
+          },
+        }
+      })
+    }
+  })
+  return h
+}
 // get the price of the product depending on the currentcurrency used
 export function getPrice(curCurrency, product) {
   let amount, symbol
@@ -101,135 +113,4 @@ export function getPrice(curCurrency, product) {
     }
     // console.log(p.amount)
   }
-}
-
-// get all currencies from database
-export function getAllCurrencies() {
-  const currencies = gql`
-    query CurrenciesQuery {
-      currencies {
-        label
-        symbol
-      }
-    }
-  `
-  return client.query({
-    query: currencies,
-  })
-}
-export function getProduct(id) {
-  const product = gql`
-    query Product($productId: String!) {
-      product(id: $productId) {
-        id
-        name
-        inStock
-        gallery
-        description
-        category
-        attributes {
-          id
-          name
-          items {
-            displayValue
-            value
-            id
-          }
-          type
-        }
-        prices {
-          currency {
-            label
-            symbol
-          }
-          amount
-        }
-        brand
-      }
-    }
-  `
-  return client.query({
-    query: product,
-    variables: {
-      productId: id,
-    },
-  })
-}
-// get all categories from database
-export function getCategory(title) {
-  const category = gql`
-    query Category($input: CategoryInput) {
-      category(input: $input) {
-        products {
-          id
-          attributes {
-            id
-            name
-            type
-            items {
-              displayValue
-              value
-              id
-            }
-          }
-          name
-          inStock
-          gallery
-          description
-          category
-          prices {
-            currency {
-              symbol
-              label
-            }
-            amount
-          }
-          brand
-        }
-        name
-      }
-    }
-  `
-  return client.query({
-    query: category,
-    variables: {
-      input: { title },
-    },
-  })
-}
-export function getAllCategories() {
-  const categories = gql`
-    query CategoriesQuery {
-      categories {
-        name
-        products {
-          name
-          inStock
-          gallery
-          description
-          category
-          attributes {
-            name
-            type
-            items {
-              value
-              displayValue
-            }
-          }
-          prices {
-            currency {
-              symbol
-              label
-            }
-            amount
-          }
-          brand
-          id
-        }
-      }
-    }
-  `
-  return client.query({
-    query: categories,
-  })
 }

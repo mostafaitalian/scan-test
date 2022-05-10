@@ -1,11 +1,15 @@
 import React, { Component, Fragment } from "react"
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
-import "../style/productitem.style.css"
-import { ReactComponent as InCart } from "../logos/incart.svg"
-import { ReactComponent as AddCart } from "../logos/Vector.svg"
+
+import "./productitem.style.css"
 import PropTypes from "prop-types"
-import { incProductQuantityNoAttr, addProductCart } from "../actions/Cart"
+
+import { ReactComponent as InCart } from "../../logos/incart.svg"
+// import { ReactComponent as AddCart } from "../../logos/Vector.svg"
+import { incProductQuantityNoAttr, addProductCart } from "../../redux/actions/Cart"
+
+import ProductItemInfo from "./ProductItemInfo"
 
 class ProductItem extends Component {
   static propTypes = {
@@ -41,10 +45,10 @@ class ProductItem extends Component {
       this.props.currentCurrency !== undefined &&
       Object.keys(this.props.currentCurrency)
     ) {
-      const a = this.props.product.prices.filter(
+      const currentItemPrice = this.props.product.prices.filter(
         (price) => price.currency.label === this.props.currentCurrency.label
       )
-      const p = a[0]
+      const p = currentItemPrice[0]
       if (p !== undefined) {
         amount = p.amount
         symbol = p.currency.symbol
@@ -75,43 +79,33 @@ class ProductItem extends Component {
             </Fragment>
           )}
         </div>
+        {/* Product has no attributes and in stock so we can add it to cart from plp */}
         {product.inStock ? (
           product.attributes.length !== 0 ? (
-            <div className="product-item-info">
-              <h4>
-                {product.name} {product.brand}
-              </h4>
-              <h4>
-                {symbol} {amount}
-              </h4>
-            </div>
+            <ProductItemInfo
+              product={product}
+              symbol={symbol}
+              amount={amount}
+              dNone={false}
+            />
           ) : (
             <Fragment>
-              <div className="product-item-info">
-                <h4>
-                  {product.name} {product.brand}
-                </h4>
-                <h4>
-                  {symbol} {amount}
-                </h4>
-                <div
-                  onClick={() => this.handleClickOnAddCart(product)}
-                  className="product-add-cart"
-                >
-                  <AddCart height={25} width={25} />
-                </div>
-              </div>
+              <ProductItemInfo
+                product={product}
+                symbol={symbol}
+                amount={amount}
+                dNone={true}
+                handleClickOnAddCart={this.handleClickOnAddCart}
+              />
             </Fragment>
           )
         ) : (
-          <div className="product-item-info">
-            <h4>
-              {product.name} {product.brand}
-            </h4>
-            <h4>
-              {symbol} {amount}
-            </h4>
-          </div>
+          <ProductItemInfo
+            product={product}
+            symbol={symbol}
+            amount={amount}
+            dNone={false}
+          />
         )}
       </div>
     )

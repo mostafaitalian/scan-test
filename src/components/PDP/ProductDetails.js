@@ -1,17 +1,27 @@
 import React, { Component, Fragment } from "react"
 import { connect } from "react-redux"
-import { checkAllAttributesSelected, getPrice, getCategory } from "../utils/index"
-import Attributes from "./Attributes"
+
+import "./productdetail.style.css"
+import PropTypes from "prop-types"
+import sanitizeHtml from "sanitize-html"
+import Spin from "react-cssfx-loading/lib/CircularProgress"
+
+import {
+  checkAllAttributesSelected,
+  getPrice,
+  arrayInArrays,
+  reshapeAttributes2,
+} from "../../utils/index"
+
+import { getCategory } from "../../utils/api"
+
 import {
   addProductCart,
   incProductQuantity,
   incProductQuantityNoAttr,
-} from "../actions/Cart"
-import { arrayInArrays } from "../utils"
-import "../style/productdetail.style.css"
-import PropTypes from "prop-types"
-import sanitizeHtml from "sanitize-html"
-import Spin from "react-cssfx-loading/lib/CircularProgress"
+} from "../../redux/actions/Cart"
+
+import Attributes from "../Attributes/Attributes"
 
 class ProductDetails extends Component {
   state = {
@@ -39,8 +49,10 @@ class ProductDetails extends Component {
   }
 
   componentDidMount() {
+    // close cart and curruncy menuesif they are opened
     this.props.handleCloseCarMenu()
     this.props.handleCloseCurMenu()
+    // show correct category menu
     this.props.changeInitialTitle(this.props.match.params.categoryName)
     let product
     const { productId } = this.props.match.params
@@ -53,38 +65,27 @@ class ProductDetails extends Component {
     ) {
       product = this.props.category.products.find((product) => product.id === productId)
       const { attributes } = product
-      let h = {}
-      // i should use here for---of
-      attributes.map((att) => {
-        if (att.items.length !== 0) {
-          att.items.map((item) => {
-            h = {
-              ...h,
-              [att.name]: {
-                ...h[att.name],
-                ...{ [item.value]: { class: "", value: item.value, selected: false } },
-              },
-            }
-            // {[item.value]:{class:''}}
-            return h
-          })
-        }
-        return h
-      })
       // put the reshaped attributes in state
-      this.setState({ items: h, defaultItems: h }, () => {
-        this.setState(
-          {
-            product,
-            mainSrc: product.gallery[0],
-          },
-          () => {
-            localStorage.setItem("product", JSON.stringify(this.state.product))
-            localStorage.setItem("items", JSON.stringify(this.state.items))
-            localStorage.setItem("defaultItems", JSON.stringify(this.state.defaultItems))
-          }
-        )
-      })
+      let reshapedAttriburtes = reshapeAttributes2(attributes)
+      this.setState(
+        { items: reshapedAttriburtes, defaultItems: reshapedAttriburtes },
+        () => {
+          this.setState(
+            {
+              product,
+              mainSrc: product.gallery[0],
+            },
+            () => {
+              localStorage.setItem("product", JSON.stringify(this.state.product))
+              localStorage.setItem("items", JSON.stringify(this.state.items))
+              localStorage.setItem(
+                "defaultItems",
+                JSON.stringify(this.state.defaultItems)
+              )
+            }
+          )
+        }
+      )
 
       if (Object.keys(this.props.currentCurrency).length !== 0) {
         localStorage.setItem(
@@ -97,6 +98,7 @@ class ProductDetails extends Component {
         JSON.parse(localStorage.getItem("categroy")) === undefined ||
         JSON.parse(localStorage.getItem("categroy")) === null
       ) {
+        // if category is not in redux store or if client open pdp of an item directly
         getCategory("all")
           .then((result) => {
             let category
@@ -119,31 +121,19 @@ class ProductDetails extends Component {
                 }
               )
               const { attributes } = product
-              let x = {}
-              // i should use here for---of
-              attributes.map((att) => {
-                if (att.items.length !== 0) {
-                  att.items.map((item) => {
-                    x = {
-                      ...x,
-                      [att.name]: {
-                        ...x[att.name],
-                        ...{
-                          [item.value]: { class: "", value: item.value, selected: false },
-                        },
-                      },
-                    }
-                    // {[item.value]:{class:''}}
-                    return x
-                  })
-                }
-                return x
-              })
+              let reshapedAttriburtess = reshapeAttributes2(attributes)
+
               // put the reshaped attributes in state
-              this.setState({ items: x, defaultItems: x }, () => {
-                localStorage.setItem("items", JSON.stringify(x))
-                localStorage.setItem("defaultItems", JSON.stringify(x))
-              })
+              this.setState(
+                { items: reshapedAttriburtess, defaultItems: reshapedAttriburtess },
+                () => {
+                  localStorage.setItem("items", JSON.stringify(reshapedAttriburtess))
+                  localStorage.setItem(
+                    "defaultItems",
+                    JSON.stringify(reshapedAttriburtess)
+                  )
+                }
+              )
 
               if (Object.keys(this.props.currentCurrency).length !== 0) {
                 localStorage.setItem(
@@ -154,18 +144,6 @@ class ProductDetails extends Component {
             }
           })
       }
-      // product = JSON.parse(localStorage.getItem("product"))
-      // items = JSON.parse(localStorage.getItem("items"))
-      // defaultItems = JSON.parse(localStorage.getItem("defaultItems"))
-      // console.log(product)
-      // if (product !== null) {
-      //   this.setState({
-      //     product,
-      //     mainSrc: product.gallery[0],
-      //     items,
-      //     defaultItems,
-      //   })
-      // }
     }
   }
 
@@ -282,6 +260,17 @@ class ProductDetails extends Component {
       }
     )
   }
+  cleanDangerousText(elems) {
+    const clean = sanitizeHtml(elems, {
+      allowedAttributes: {
+        ul: ["class"],
+      },
+      transformTags: {
+        ul: sanitizeHtml.simpleTransform("ul", { class: "list-pullit" }),
+      },
+    })
+    return clean
+  }
   render() {
     let product
     if (this.props.category === null || product !== undefined) {
@@ -309,19 +298,19 @@ class ProductDetails extends Component {
     if (product && currentCurrency !== null && currentCurrency !== undefined) {
       pricing = getPrice(currentCurrency, product)
     }
-    let dangerousHtmlFrom = ""
-    if (product) {
-      dangerousHtmlFrom = `
-      ${product.description}`
-    }
-    const clean = sanitizeHtml(dangerousHtmlFrom, {
-      allowedAttributes: {
-        ul: ["class"],
-      },
-      transformTags: {
-        ul: sanitizeHtml.simpleTransform("ul", { class: "list-pullit" }),
-      },
-    })
+    // let dangerousHtmlFrom = ""
+    // if (product) {
+    //   dangerousHtmlFrom = `
+    //   ${product.description}`
+    // }
+    // const clean = sanitizeHtml(dangerousHtmlFrom, {
+    //   allowedAttributes: {
+    //     ul: ["class"],
+    //   },
+    //   transformTags: {
+    //     ul: sanitizeHtml.simpleTransform("ul", { class: "list-pullit" }),
+    //   },
+    // })
 
     return (
       <Fragment>
@@ -406,7 +395,9 @@ class ProductDetails extends Component {
 
               <div
                 className="product-description"
-                dangerouslySetInnerHTML={{ __html: clean }}
+                dangerouslySetInnerHTML={{
+                  __html: this.cleanDangerousText(product?.description),
+                }}
               ></div>
             </div>
           </div>

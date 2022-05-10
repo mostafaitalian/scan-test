@@ -5,7 +5,7 @@ import {
   REMOVE_PRODUCT_CART,
   INC_PRODUCT_QUANTITY_NO_ATTR,
 } from "../actions/Cart"
-import { getSelectedAtt, checkArraysEqual } from "../utils"
+import { getSelectedAtt, checkArraysEqual } from "../../utils"
 
 export default function cartReducer(state = [], action) {
   switch (action.type) {

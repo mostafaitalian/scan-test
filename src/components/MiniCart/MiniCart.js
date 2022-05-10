@@ -1,14 +1,18 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
+import PropTypes from "prop-types"
+
+import { withRouter } from "react-router-dom"
+
 import {
   incProductQuantity,
   decProductQuantity,
   removeProductCart,
-} from "../actions/Cart"
-import { getSelectedAtt } from "../utils"
-import "../style/minicart.style.css"
-import PropTypes from "prop-types"
-import { withRouter } from "react-router-dom"
+} from "../../redux/actions/Cart"
+import { getSelectedAtt } from "../../utils"
+
+import "./minicart.style.css"
+import CancelItem from "../Cart/CancelItem"
 
 class MiniCart extends Component {
   state = { total: 0 }
@@ -159,7 +163,7 @@ class MiniCart extends Component {
                     }
                     className="mini-cart-img-x"
                   >
-                    <div>X</div>
+                    <CancelItem />
                   </div>
                 </div>
               </div>

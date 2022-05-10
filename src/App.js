@@ -1,13 +1,16 @@
 import "./App.css"
 import React, { Component } from "react"
 import { Redirect, Route, Switch } from "react-router-dom"
-import Category from "./components/Category"
+
 import { connect } from "react-redux"
-import { handleInitData } from "./actions/shared"
-import ProductDetails from "./components/ProductDetails"
-import TitleComponent from "./components/TitleComponent"
-import Cart from "./components/Cart"
+
 import PropTypes from "prop-types"
+
+import Category from "./components/Category/Category"
+import { handleInitData } from "./redux/actions/shared"
+import ProductDetails from "./components/PDP/ProductDetails"
+import TitleComponent from "./components/Title/TitleComponent"
+import Cart from "./components/Cart/Cart"
 
 class App extends Component {
   // initial state

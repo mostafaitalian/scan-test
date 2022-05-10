@@ -1,18 +1,24 @@
 import React, { Component, Fragment } from "react"
-import styled from "styled-components"
-import { NavLink } from "react-router-dom"
-import { withRouter } from "react-router-dom"
+// import styled from "styled-components"
+import { NavLink, withRouter } from "react-router-dom"
 import FadingBalls from "react-cssfx-loading/lib/FadingBalls"
-import { ReactComponent as DownArrow } from "../logos/da.svg"
-import { ReactComponent as EmptyCart } from "../logos/emptycart.svg"
-import { ReactComponent as FullCart } from "../logos/fullcart.svg"
-import { ReactComponent as ColorCart } from "../logos/svg 3.svg"
-import { ReactComponent as ColCart } from "../logos/svg 19.svg"
+
 import { connect } from "react-redux"
-import CurrencyList from "./CurrencyList"
-import MiniCart from "./MiniCart"
-import "../style/navcomponent.style.css"
+
 import PropTypes from "prop-types"
+
+import { ReactComponent as DownArrow } from "../../logos/da.svg"
+import { ReactComponent as EmptyCart } from "../../logos/emptycart.svg"
+import { ReactComponent as FullCart } from "../../logos/fullcart.svg"
+import { ReactComponent as ColorCart } from "../../logos/svg 3.svg"
+import { ReactComponent as ColCart } from "../../logos/svg 19.svg"
+
+import CurrencyList from "../CurrencyList/CurrencyList"
+import MiniCart from "../MiniCart/MiniCart"
+
+import { NavHeader } from "./NavComponent.style"
+
+import "./navcomponent.style.css"
 
 class NavComponent extends Component {
   constructor(props) {
@@ -69,17 +75,17 @@ class NavComponent extends Component {
       lineHeight: "120%",
       // paddingButtom: "15px",
     }
-    const NavHeader = styled.div`
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      position: relative;
-      padding: 10px 0px 0px 0px;
-      /* outline-offset: 50px; */
-      margin-top: 0px;
-      box-sizing: border-box;
-    `
+    // const NavHeader = styled.div`
+    //   display: flex;
+    //   justify-content: space-between;
+    //   align-items: center;
+    //   width: 100%;
+    //   position: relative;
+    //   padding: 10px 0px 0px 0px;
+    //   /* outline-offset: 50px; */
+    //   margin-top: 0px;
+    //   box-sizing: border-box;
+    // `
 
     const { loading, categoriesTitles: titles } = this.props
 

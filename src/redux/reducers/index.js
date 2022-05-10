@@ -1,4 +1,5 @@
 import { combineReducers } from "redux"
+
 import categoriesReducer from "./Categories"
 import currenciesReducer from "./Currencies"
 import currenctCurrencyReducer from "./CurrentCurrency"

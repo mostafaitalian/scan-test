@@ -1,4 +1,8 @@
 /* productitem component */
+.d-none{
+  display: none !important;
+}
+
 .product-item {
   width: 300px;
   height: auto;

@@ -1,8 +1,10 @@
 import React, { Component } from "react"
-import NavComponent from "./NavComponent"
+
 import { Query } from "@apollo/client/react/components"
 import { gql } from "@apollo/client"
 import PropTypes from "prop-types"
+
+import NavComponent from "../Nav/NavComponent"
 const categotiesQuery = gql`
   query categories {
     categories {

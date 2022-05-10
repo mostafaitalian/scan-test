@@ -157,8 +157,11 @@ div.mini-cart-item-header div {
   color: white;
 }
 .mini-cart-img-x div {
-  display: block;
+  display: inline-flex;
   font-weight: 700;
+}
+.mini-cart-img-x:hover .span1, .mini-cart-img-x:hover .span2{
+  background-color: white;
 }
 .mini-cart-btns,
 .mini-cart-total {

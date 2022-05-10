@@ -1,14 +1,16 @@
 import React from "react"
 import ReactDOM from "react-dom"
+
 import "./index.css"
-import App from "./App"
-import reportWebVitals from "./reportWebVitals"
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import { compose, createStore } from "redux"
-import reducers from "./reducers"
-import middlewares from "./middlewares"
+
+import reportWebVitals from "./reportWebVitals"
+import App from "./App"
+import reducers from "./redux/reducers"
+import middlewares from "./redux/middlewares"
 // import { gql } from "@apollo/client"
 // import { Query } from "@apollo/client/react/components"
 
